@@ -1,0 +1,21 @@
+package com.resourcesManager.backend.resourcesManager.entities;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+@Entity
+@Builder @AllArgsConstructor @NoArgsConstructor @Data
+@DiscriminatorValue("Imprimante")
+@OnDelete(action = OnDeleteAction.CASCADE)
+public class Imprimante extends Ressource {
+
+    private String resolution;
+    private String vitesseImpression;
+
+}
