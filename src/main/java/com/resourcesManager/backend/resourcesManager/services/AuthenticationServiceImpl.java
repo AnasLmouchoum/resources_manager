@@ -161,7 +161,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
 
-    private boolean hasRole(String userName, String nomRole) {
+    public boolean hasRole(String userName, String nomRole) {
         User user = userRepository.findUserByUsername(userName);
         Collection<Role> roles = user.getRoles();
         return roles.stream()
@@ -184,7 +184,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return null;
     }
 
-    private boolean isAccountBlocked(String userName) {
+    public boolean isAccountBlocked(String userName) {
         Fournisseur fournisseur = fournisseurRepository.findByUsername(userName);
         if (!fournisseur.isBlackList())
             return false;
@@ -193,7 +193,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    private void revokeAllUserTokens(User user) {
+    public void revokeAllUserTokens(User user) {
         List<Token> validUserToken = tokenRepository.findAllValidTokensByUser(user.getId());
         if (validUserToken.isEmpty())
             return;

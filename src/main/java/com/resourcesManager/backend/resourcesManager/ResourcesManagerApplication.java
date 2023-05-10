@@ -20,13 +20,13 @@ public class ResourcesManagerApplication {
     @Bean
     CommandLineRunner commandLineRunner(AuthenticationService authenticationService) {
         return args -> {
-//            Stream.of( "user","responsable", "fournisseur", "technicien", "CHEF_DEP",
-//                    "PROF").forEach(name -> {
-//                Role
-//                        role = new Role();
-//                role.setNomRole(name);
-//                authenticationService.saveRole(role.getNomRole());
-//            });
+            Stream.of( "user","responsable", "fournisseur", "technicien", "CHEF_DEP",
+                    "PROF").forEach(name -> {
+                Role
+                        role = new Role();
+                role.setNomRole(name);
+                authenticationService.saveRole(role.getNomRole());
+            });
         };
     }
 

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,10 +18,13 @@ public class OffreServiceImpl implements   OffreService{
     private final AppelOffreRepository appelOffreRepository;
     private final RessourceRepository ressourceRepository;
 
-    public OffreServiceImpl(OffreRepository offreRepository, AppelOffreRepository appelOffreRepository, RessourceRepository ressourceRepository) {
+    private final NotifFournisseurService notifFournisseurService;
+
+    public OffreServiceImpl(OffreRepository offreRepository, AppelOffreRepository appelOffreRepository, RessourceRepository ressourceRepository, NotifFournisseurService notifFournisseurService) {
         this.offreRepository = offreRepository;
         this.appelOffreRepository = appelOffreRepository;
         this.ressourceRepository = ressourceRepository;
+        this.notifFournisseurService = notifFournisseurService;
     }
 
 
@@ -86,6 +90,25 @@ public class OffreServiceImpl implements   OffreService{
             o.setIsRejected(true);
             o.setIsWaiting(false);
             offreRepository.save(o);
+        }
+
+        createNotificationFournisseur(appelOffre, offre.getId());
+
+    }
+
+    public void createNotificationFournisseur(AppelOffre appelOffre, Long offreId) {
+        ArrayList<Offre> offres = (ArrayList<Offre>) offreRepository.findOffreByIdAppelOffre(appelOffre.getId());
+
+        for(Offre offre: offres) {
+            String idFour = offre.getIdFournisseur();
+            NotifFournisseur notifFournisseur = new NotifFournisseur();
+            notifFournisseur.setIsSeen(false); notifFournisseur.setDateOffre(offre.getDateDebut());
+            notifFournisseur.setIdFournisseur(idFour);
+            if(offreId == offre.getId())
+                notifFournisseur.setIsAccepted(true);
+            else
+                notifFournisseur.setIsAccepted(false);
+            notifFournisseurService.addNotifFournisseur(notifFournisseur);
         }
 
     }
